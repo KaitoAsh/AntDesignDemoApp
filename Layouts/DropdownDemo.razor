@@ -1,0 +1,13 @@
+﻿<Dropdown Trigger="@(new Trigger[] { Trigger.Click })">
+    <Overlay>
+        <Menu SelectedKeys="null">
+            <MenuItem Key="click" OnClick="@OnClick">
+                <Icon Type="carry-out" Theme="outline" />
+                CLICK
+            </MenuItem>
+        </Menu>
+    </Overlay>
+    <Unbound>
+        <Button RefBack=@context>Processing</Button>
+    </Unbound>
+</Dropdown>
