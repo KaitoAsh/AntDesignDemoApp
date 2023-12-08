@@ -1,3 +1,7 @@
 ﻿@page "/menu1"
 
 <h3>Menu 1</h3>
+
+ <MyAntDesignApp.Components.CustomSelectComponent @bind-Value="_selectedELCode"
+                                               DataSource="@ELCodes"
+                                               OnSelectionChange="OnELCodeChanged" />

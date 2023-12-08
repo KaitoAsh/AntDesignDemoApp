@@ -1,0 +1,44 @@
+﻿@inherits AntInputComponentBase<string>
+@using MyAntDesignApp.Model
+
+<Select @bind-Value="CurrentValue"
+        DataSource="_filteredELCodes.ToList()"
+        Placeholder="SEARCH BY [EXPCLASS][AREACODE][ITEMNUM][SUBCODE] [DESCRIPTION]"
+        TItem="ELCodeViewModel"
+        TItemValue="string"
+        LabelName="@nameof(ELCodeViewModel.SearchText)"
+        ValueName="@nameof(ELCodeViewModel.Code)"
+        OnSelectedItemChanged="OnSelectionChanged"
+        OnSearch="OnSearched"
+        Loading="Loading"
+        EnableSearch="true"
+        AllowClear="AllowClear"
+        ShowArrowIcon="false"
+        Disabled="Disabled"
+        Size="@Size"
+        Class="input-uppercase">
+    <ItemTemplate Context="elCode">
+        <Row>
+            <AntDesign.Col Span="1">
+                <Text Strong>@elCode.ExpClass</Text>
+            </AntDesign.Col>
+            <AntDesign.Col Span="2">
+                <Text Strong>@elCode.AreaCode</Text>
+            </AntDesign.Col>
+            <AntDesign.Col Span="1">
+                <Text Strong>@elCode.ItemNum</Text>
+            </AntDesign.Col>
+            <AntDesign.Col Span="1">
+                <Text Strong>@elCode.SubCode</Text>
+            </AntDesign.Col>
+            <AntDesign.Col Span="19">
+                <Row>
+                    <Text>@elCode.Description</Text>
+                </Row>
+                <Row>
+                    <Text Type="secondary">@elCode.Title</Text>
+                </Row>
+            </AntDesign.Col>
+        </Row>
+    </ItemTemplate>
+</Select>
