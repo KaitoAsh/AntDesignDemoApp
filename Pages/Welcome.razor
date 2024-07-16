@@ -29,6 +29,11 @@
     bool _confirmLoading = false;
     string _modalText = "Content of the modal";
 
+    RenderFragment FormTemplate()
+    {
+        return @<div>@_modalText</div>;
+    }
+
     private async Task OpenModal()
     {
         ModalRef modalRef = default;
@@ -37,19 +42,26 @@
         {
                 Title = _title,
                 OkText = _okText,
+                ConfirmLoading = false,
                 Centered = true,
                 Maximizable = true,
                 CancelText = _cancelText,
-                Content =@<div>some content</div>,
+                Content = FormTemplate(),
                 OnOk = async (e) => 
-                { 
-                    Console.WriteLine("OK modal"); 
-                    await Task.Delay(3000); 
-                    await modalRef.CloseAsync();
-                },
+                {
+                    Console.WriteLine("Clicked on modal !!!");
+                    
+                    modalRef?.SetConfirmLoading(true);
+                   
+                    StateHasChanged();
+                    await Task.Delay(3000);
+                    
+                    modalRef?.SetConfirmLoading(false);
+                    //await modalRef.CloseAsync();
+            },
         };
         
-        modalRef = await _modalService.CreateModalAsync(modalConfig);
+        modalRef = _modalService.CreateModal(modalConfig);
     }
 
     private async Task OpenConfirm()
@@ -82,7 +94,7 @@
         _modalText = "The modal will be closed after two seconds";
         _confirmLoading = true;
         StateHasChanged();
-        //await Task.Delay(3000);
+        await Task.Delay(3000);
         _visible = false;
         _confirmLoading = false;
     }
