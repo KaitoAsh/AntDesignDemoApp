@@ -1,0 +1,49 @@
+﻿@using MyAntDesignApp.Model
+@* @inherits AppComponentBase *@
+
+<Modal @ref="ModalRef" Title="@Title" Visible="Visible" Draggable="true"
+       OkText="@OK" OnOk="OkButtonOnClick" OnCancel="CancelButtonOnClick"
+       MaskClosable="false" Keyboard="false" Width="800">
+
+    <Form @ref="FormRef" Model="@InputModel"
+          Loading="Loading" ValidateOnChange="true"
+          OnFinish="OnFinish" OnFinishFailed="OnFinishFailed"
+          LabelColSpan="6" WrapperColSpan="18">
+
+        <Validator>
+            <FluentValidationValidator />
+        </Validator>
+
+        <ChildContent>
+            <Row>
+                <AntDesign.Col Span="4"></AntDesign.Col>
+                <AntDesign.Col Span="15">
+                    <FormItem Label="Lent OC Code" LabelColSpan="6" Required>
+                        <Select DataSource="@OperatingCentreDropdown"
+                                @bind-Value="@context.LentOcCode"
+                                LabelName="@nameof(OpCentreModel.SearchText)"
+                                ValueName="@nameof(OpCentreModel.Code)"
+                                EnableSearch
+                                Loading="Loading">
+                        </Select>
+                    </FormItem>
+                </AntDesign.Col>
+            </Row>
+            <Row>
+                <AntDesign.Col Span="4"></AntDesign.Col>
+                <AntDesign.Col Span="10">
+                    <FormItem Label="Status" LabelColSpan="9" Required>
+                        <Select DataSource="@StatusDropdown"
+                                @bind-Value="@context.StatusId"
+                                LabelName="@nameof(LookupViewModel.Description)"
+                                ValueName="@nameof(LookupViewModel.Id)"
+                                EnableSearch
+                                DefaultActiveFirstOption="true"
+                                Loading="Loading">
+                        </Select>
+                    </FormItem>
+                </AntDesign.Col>
+            </Row>
+        </ChildContent>
+    </Form>
+</Modal>

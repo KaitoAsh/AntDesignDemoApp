@@ -67,12 +67,12 @@
                 {
                     Console.WriteLine("Clicked on modal !!!");
                     
-                    modalRef?.SetConfirmLoading(true);
+                    modalRef?.SetConfirmLoading(true); //added
                    
                     StateHasChanged();
                     await Task.Delay(3000);
                     
-                    modalRef?.SetConfirmLoading(false);
+                    modalRef?.SetConfirmLoading(false); //added
                     await modalRef.CloseAsync();
             },
         };
