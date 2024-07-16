@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using MyAntDesignApp.Components
 @inject ModalService _modalService
 
 <Space>
@@ -25,13 +26,25 @@
     string _okText = "OK!";
     string _cancelText = "Cancel?";
     string _title = "Override Locale";
+    string _modalText = "Content of the modal";
+
     bool _visible = false;
     bool _confirmLoading = false;
-    string _modalText = "Content of the modal";
+    int _width = 800;
 
     RenderFragment FormTemplate()
     {
-        return @<div>@_modalText</div>;
+        //return @<div>@_modalText</div>;
+
+        RenderFragment renderFragment = builder =>
+        {
+            builder.OpenComponent<Menu1>(0);
+            //builder.AddAttribute(1, "Title", title);
+            //builder.AddAttribute(2, "OnELCodeChanged", EventCallback.Factory.Create<MouseEventArgs>(this, CloseModal));
+            builder.CloseComponent();
+        };
+
+        return renderFragment;
     }
 
     private async Task OpenModal()
@@ -39,14 +52,17 @@
         ModalRef modalRef = default;
 
         var modalConfig = new ModalOptions
-        {
+            {
                 Title = _title,
-                OkText = _okText,
+                Visible = true,
+                Draggable = true,
                 ConfirmLoading = false,
-                Centered = true,
-                Maximizable = true,
-                CancelText = _cancelText,
+                MaskClosable = false,
+                Keyboard = false,
+                Width = _width,
                 Content = FormTemplate(),
+                CancelText = _cancelText,
+                OkText = _okText,
                 OnOk = async (e) => 
                 {
                     Console.WriteLine("Clicked on modal !!!");
@@ -57,7 +73,7 @@
                     await Task.Delay(3000);
                     
                     modalRef?.SetConfirmLoading(false);
-                    //await modalRef.CloseAsync();
+                    await modalRef.CloseAsync();
             },
         };
         
