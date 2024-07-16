@@ -1,6 +1,8 @@
 ﻿@page "/"
 @inject ModalService _modalService
 
+@using MyAntDesignApp.Components;
+
 <Space>
     <SpaceItem>
         <Button OnClick="OpenModal" Type="primary">Open a Modal by CreateModal()</Button>
@@ -12,13 +14,20 @@
     <Button Type="primary" OnClick="@ShowModal">
         Open Modal with async logic
     </Button>
-    <Modal Title="@("Title")"
+@*     <Modal Title="@("Title")"
            Visible="@_visible"
            OnOk="@HandleOk"
            OnCancel="@HandleCancel"
            ConfirmLoading="@_confirmLoading">
         <p>@_modalText</p>
-    </Modal>
+    </Modal> *@
+
+    <CustomModal Title="@("Title")"
+                 Visible="@_visible"
+                 OnOk="@HandleOk"
+                 OnCancel="@HandleCancel"
+                 ModalText="@_modalText">
+    </CustomModal>
 </Space>
 
 @code {
@@ -80,11 +89,8 @@
     {
         Console.WriteLine("Clicked on modal");
         _modalText = "The modal will be closed after two seconds";
-        _confirmLoading = true;
-        StateHasChanged();
-        //await Task.Delay(3000);
-        _visible = false;
-        _confirmLoading = false;
+
+        await Task.Delay(3000);
     }
 
     private void HandleCancel(MouseEventArgs e)
