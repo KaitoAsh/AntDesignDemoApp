@@ -2,11 +2,11 @@
 {
     public partial class SelectModalDialog
     {
-        DisplayModalDialog DisplayModalDialog;
+        DisplayModalDialog _displayModalDialog;
 
         private void SelectOC()
         {
-            DisplayModalDialog.Show();
+            _displayModalDialog.Show();
         }
     }
 }

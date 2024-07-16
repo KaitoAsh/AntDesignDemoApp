@@ -1,30 +1,95 @@
 ﻿@page "/"
-@inject IConfirmService _confirmService
 @inject ModalService _modalService
 
 <Space>
     <SpaceItem>
-        <Button OnClick="OpenModal" Type="primary">Open a Modal</Button>
+        <Button OnClick="OpenModal" Type="primary">Open a Modal by CreateModal()</Button>
+        <Button OnClick="OpenConfirm" Type="primary">Open a Modal by Confirm()</Button>
     </SpaceItem>
+</Space>
+
+<Space>
+    <Button Type="primary" OnClick="@ShowModal">
+        Open Modal with async logic
+    </Button>
+    <Modal Title="@("Title")"
+           Visible="@_visible"
+           OnOk="@HandleOk"
+           OnCancel="@HandleCancel"
+           ConfirmLoading="@_confirmLoading">
+        <p>@_modalText</p>
+    </Modal>
 </Space>
 
 @code {
     string _okText = "OK!";
     string _cancelText = "Cancel?";
     string _title = "Override Locale";
+    bool _visible = false;
+    bool _confirmLoading = false;
+    string _modalText = "Content of the modal";
 
     private async Task OpenModal()
     {
+        ModalRef modalRef = default;
+
         var modalConfig = new ModalOptions
-            {
+        {
                 Title = _title,
                 OkText = _okText,
                 Centered = true,
                 Maximizable = true,
                 CancelText = _cancelText,
-                Content =@<div>some content</div>
+                Content =@<div>some content</div>,
+                OnOk = async (e) => 
+                { 
+                    Console.WriteLine("OK modal"); 
+                    await Task.Delay(3000); 
+                    await modalRef.CloseAsync();
+                },
+        };
+        
+        modalRef = await _modalService.CreateModalAsync(modalConfig);
+    }
+
+    private async Task OpenConfirm()
+    {
+        var confirmConfig = new ConfirmOptions
+        {
+            Title = _title,
+            OkText = _okText,
+            CancelText = _cancelText,
+            Content ="content...",
+            OnOk = async (e) => 
+            { 
+                Console.WriteLine("OK confirm"); 
+                await Task.Delay(3000); 
+            },
         };
 
-        await _modalService.CreateModalAsync(modalConfig);
+        _modalService.Confirm(confirmConfig);
+    }
+
+    private void ShowModal()
+    {
+        _visible = true;
+    }
+
+
+    private async Task HandleOk(MouseEventArgs e)
+    {
+        Console.WriteLine("Clicked on modal");
+        _modalText = "The modal will be closed after two seconds";
+        _confirmLoading = true;
+        StateHasChanged();
+        //await Task.Delay(3000);
+        _visible = false;
+        _confirmLoading = false;
+    }
+
+    private void HandleCancel(MouseEventArgs e)
+    {
+        Console.WriteLine("Clicked cancel button");
+        _visible = false;
     }
 }

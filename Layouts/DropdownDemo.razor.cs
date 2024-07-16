@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using MyAntDesignApp.Components;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MyAntDesignApp.Layouts
@@ -27,10 +26,10 @@ namespace MyAntDesignApp.Layouts
 
         private async Task ShowModalDialog()
         {
-            ModalRef = await CreateModalAsync("Open Dialog");
+            ModalRef = await CreateModal("Open Dialog");
         }
 
-        private Task<ModalRef> CreateModalAsync(string title)
+        private async Task<ModalRef> CreateModal(string title)
         {
             RenderFragment dialog = builder =>
             {
@@ -40,7 +39,7 @@ namespace MyAntDesignApp.Layouts
                 builder.CloseComponent();
             };
 
-            return ModalService.CreateModalAsync(new ModalOptions()
+            return await ModalService.CreateModalAsync(new ModalOptions()
             {
                 Title = title,
                 MaskClosable = false,
